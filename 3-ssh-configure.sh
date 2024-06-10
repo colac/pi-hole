@@ -70,6 +70,17 @@ commandSetup="mkdir -p \"$sshDirString\" && chmod 700 \"$sshDirString\" && echo 
 commandConnect="ssh -i \"$sshKeyString\" -v "$USER"@"$ipAddress""
 # Output the command for the user to copy and run
 printf '%s\n\n' "$commandSetup"
+print "Test SSH connection\n"
 printf '%s\n\n' "$commandConnect"
 
 funcAuthKeysFile
+
+# Replace vars in 4-backup.sh, which will be copied into the NAS
+sed -i "s|<USER>|$USER|g" "./4-backup.sh"
+sed -i "s|<IP>|$ipAddress|g" "./4-backup.sh"
+sed -i "s|<SSHKEY>|$sshKeyString|g" "./4-backup.sh"
+
+
+echo -e "Copy the file or the following output to the NAS\n"
+cat "./4-backup.sh"
+echo -e "\n"
